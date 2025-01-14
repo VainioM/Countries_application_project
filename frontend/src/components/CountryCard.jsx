@@ -1,9 +1,14 @@
 import '../css/CountryCard.css'
+import { useCountryContext } from '../contexts/CountryContext'
 
 function CountryCard({country}) {
+    const {isVisited, addToVisited, removeFromVisited} = useCountryContext()
+    const visited = isVisited(country.id)
 
-    function onVisitedClick(){
-        alert("clicked!")
+    function onVisitedClick(e){
+        e.preventDefault()
+        if(visited) removeFromVisited(country.id)
+            else addToVisited(country)
     }
 
     return <div className="country-card">

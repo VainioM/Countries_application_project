@@ -5,11 +5,13 @@ import Visited from './pages/Visited';
 import Worldmap from './pages/worldmap';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import { CountryProvider } from './contexts/CountryContext';
 
 function App() {
 
   return (
     <div>
+      <CountryProvider>
       <Navbar />
       <main className='main-content'>
         <Routes>
@@ -18,6 +20,7 @@ function App() {
           <Route path="/worldmap" element={<Worldmap />}/>
         </Routes>
       </main>
+      </CountryProvider>
       <Footer/>
       </div>
   );
