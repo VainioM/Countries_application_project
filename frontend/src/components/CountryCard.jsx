@@ -17,7 +17,7 @@ function CountryCard({country}) {
         </div>
         <div className="country-info">
             <h3>{country.name.common}</h3>
-            <p>{country.name.common}</p>
+            <p>{country.name.official}</p>
         </div>
     </div>
 }
