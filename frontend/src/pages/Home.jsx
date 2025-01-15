@@ -86,9 +86,9 @@ function Home() {
         {loading ? (
         <div className="loading">Loading...</div>
       ) : (
-        <div className="movies-grid">
+        <div className="countries-grid">
           {countries.map((country, index) => (
-            <CountryCard country={country} key={index} />
+            <CountryCard country={country} key={country.name.official} />
           ))}
         </div>
       )}

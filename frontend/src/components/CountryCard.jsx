@@ -3,11 +3,11 @@ import { useCountryContext } from '../contexts/CountryContext'
 
 function CountryCard({country}) {
     const {isVisited, addToVisited, removeFromVisited} = useCountryContext()
-    const visited = isVisited(country.id)
+    const visited = isVisited(country.name.official)
 
     function onVisitedClick(e){
         e.preventDefault()
-        if(visited) removeFromVisited(country.id)
+        if(visited) removeFromVisited(country.name.official)
             else addToVisited(country)
     }
 
@@ -15,7 +15,7 @@ function CountryCard({country}) {
         <div className="country-flag">
             <img src={country.flags} alt={country.name.common}/>
             <div className="country-overlay">
-                <button className="visited-btn" onClick={onVisitedClick}>
+                <button className={`visited-btn ${visited ? "active" : ""}`} onClick={onVisitedClick}>
 
                 </button>
             </div>

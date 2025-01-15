@@ -23,11 +23,11 @@ export const CountryProvider = ({children}) => {
     }
 
     const removeFromVisited = (countryId) => {
-        setVisited(prev => prev.filter(country => country.id !== countryId))
+        setVisited(prev => prev.filter(country => country.name.official !== countryId))
     }
 
     const isVisited = (countryId) => {
-        return visited.some(country => country.id === countryId)
+        return visited.some(country => country.name.official === countryId)
     }
 
     const value = {
