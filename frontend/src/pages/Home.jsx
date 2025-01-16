@@ -7,7 +7,7 @@ const baseurl = 'https://restcountries.com/v3.1/'
 
 //get a list of all countries
 export const getAllCountries = async () => {
-    const response = await fetch(`${baseurl}all?fields=name`);
+    const response = await fetch(`${baseurl}all`);
     const data = await response.json();
     //data now correctly has the api response
     console.log(data[0].name.common)
@@ -19,7 +19,7 @@ export const getAllCountries = async () => {
 export const getCountriesBySearch = async (query) => {
     const response = await fetch(
         `${baseurl}name/${encodeURIComponent(
-            query)}?fields=name`
+            query)}`
         );
     const data = await response.json();
     return data;
@@ -59,6 +59,7 @@ function Home() {
         try{
             const searchResults = await getCountriesBySearch(searchQuery)
             setCountries(searchResults)
+            console.log(countries)
             setError(null)
         }   catch (err) {
             console.log(err)
@@ -87,8 +88,8 @@ function Home() {
         <div className="loading">Loading...</div>
       ) : (
         <div className="countries-grid">
-          {countries.map((country, index) => (
-            <CountryCard country={country} key={country.name.official} />
+          {countries.map((country) => (
+            <CountryCard country={country} key={country.cca2} />
           ))}
         </div>
       )}
