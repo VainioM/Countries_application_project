@@ -13,7 +13,7 @@ function CountryCard({country}) {
 
     return <div className="country-card">
         <div className="country-flag">
-            <img src={country.flags} alt={country.name.common}/>
+            <img src={country.flags.png} alt={country.name.common}/>
             <div className="country-overlay">
                 <button className={`visited-btn ${visited ? "active" : ""}`} onClick={onVisitedClick}>
 
@@ -22,7 +22,7 @@ function CountryCard({country}) {
         </div>
         <div className="country-info">
             <h3>{country.name.common}</h3>
-            <p>{country.name.official}</p>
+            <p>{country.region}</p>
         </div>
     </div>
 }
