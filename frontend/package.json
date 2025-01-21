@@ -3,17 +3,20 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "./frontend/server.mjs",
+  "main": "./server.mjs",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start:dev": "nodemon ./frontend/server.mjs",
-    "start": "node ./frontend/server.mjs"
+    "start:dev": "nodemon ./server.mjs",
+    "start": "node ./server.mjs"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.12.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.1"

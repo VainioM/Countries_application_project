@@ -3,9 +3,11 @@ import Home from './pages/Home';
 import {Route, Routes} from 'react-router-dom'
 import Visited from './pages/Visited';
 import Worldmap from './pages/Worldmap';
+import Users from './pages/Users';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { CountryProvider } from './contexts/CountryContext';
+import { useEffect, useState } from 'react';
 
 function App() {
 
@@ -18,6 +20,7 @@ function App() {
           <Route path="/" element={<Home />}/>
           <Route path="/visited" element={<Visited />}/>
           <Route path="/worldmap" element={<Worldmap />}/>
+          <Route path="/users" element={<Users />}/>
         </Routes>
       </main>
       </CountryProvider>

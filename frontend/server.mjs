@@ -1,8 +1,13 @@
-import express from "express";
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 
+import express from "express";
 const app = express();
+const mysql = require('mysql')
+const cors = require('cors')
 
 app.use(express.json());
+app.use(cors())
 
 const PORT = process.env.PORT || 3000;
 
@@ -12,6 +17,23 @@ const mockUsers = [
     { id:2, username: "lasse", displayName: "Lasse"},
     { id:3, username: "samuli", displayName: "Samuli"}
 ]
+
+//Create database connection
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'password',
+    database: 'maantieto'
+
+})
+
+app.get('/users', (request, response) => {
+    const sql = 'SELECT * FROM users';
+    db.query(sql, (err, data) => {
+        if(err) return response.json(err);
+        return response.json(data);
+    })
+})
 
 //GET send status code 201 (reuqest successful)
 app.get("/", (request, response) => {
