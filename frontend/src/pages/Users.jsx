@@ -22,11 +22,11 @@ function Users(){
                 <th>Password</th>
             </thead>
             <tbody>
-                {data.map((d, i) => (
+                {data.map((user, i) => (
                     <tr key={i}>
-                        <td>{d.UserName}</td>
-                        <td>{d.Email}</td>
-                        <td>{d.Hash}</td>
+                        <td>{user.UserName}</td>
+                        <td>{user.Email}</td>
+                        <td>{user.Hash}</td>
                     </tr>
                 ))}
             </tbody>

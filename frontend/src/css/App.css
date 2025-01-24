@@ -6,3 +6,16 @@
   display: flex;
   flex-direction: column;
 }
+
+.bg-image{
+  background-image: url("https://img.freepik.com/premium-photo/world-map-with-texture-global-satellite-photo-earth-view-from-space_926199-2448366.jpg?w=900");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.blur {
+  background: rgba(255, 255, 255, 0.2); 
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+}

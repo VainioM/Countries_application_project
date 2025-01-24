@@ -1,6 +1,9 @@
 .navbar {
-    background-color: hsl(111, 100%, 36%);
-    padding: 1rem 2rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(2,118,0),
+    rgb(0, 176, 6)
+  );
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -8,8 +11,9 @@
   }
   
   .navbar-brand {
-    font-size: 1.5rem;
+    font-size: rem;
     font-weight: bold;
+    color: rgb(255, 255, 255);
   }
   
   .navbar-links {
@@ -36,6 +40,7 @@
   
     .navbar-brand {
       font-size: 1.2rem;
+      color: white;
     }
   
     .navbar-links {
@@ -45,4 +50,8 @@
     .nav-link {
       padding: 0.5rem;
     }
+  }
+  .header{
+    color:white;
+    padding: 1rem;
   }

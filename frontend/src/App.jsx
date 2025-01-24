@@ -12,9 +12,12 @@ import { useEffect, useState } from 'react';
 function App() {
 
   return (
+    <div class="bg-image">
+      <div class='blur'></div>
     <div>
       <CountryProvider>
       <Navbar />
+
       <main className='main-content'>
         <Routes>
           <Route path="/" element={<Home />}/>
@@ -24,7 +27,9 @@ function App() {
         </Routes>
       </main>
       </CountryProvider>
+      
       <Footer/>
+      </div>
       </div>
   );
 }

@@ -1,15 +1,21 @@
 import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-
 import express from "express";
+
+const require = createRequire(import.meta.url);
 const app = express();
 const mysql = require('mysql')
 const cors = require('cors')
+const bcrypt = require('bcrypt')
 
 app.use(express.json());
 app.use(cors())
 
+const users = [{ email: 'asdfg@gmail.com', username: 'Person_1', password: 'qwerty' }] //this will be replaced by an SQL table
+
 const PORT = process.env.PORT || 3000;
+
+//use EJS as the view engine
+app.set('view engine', 'ejs')
 
 //create a list of users. This will be replaced by a database query
 const mockUsers = [
@@ -26,7 +32,7 @@ const db = mysql.createConnection({
     database: 'maantieto'
 
 })
-
+//GET get a list of all users from the MySQL database
 app.get('/users', (request, response) => {
     const sql = 'SELECT * FROM users';
     db.query(sql, (err, data) => {
@@ -42,27 +48,21 @@ app.get("/", (request, response) => {
 
 //GET create a route where the user can request for a list of users using filtering
 app.get('/api/users', (request, response) => {
-    console.log(request.query);
-    const {
-      query: { filter, value },
-    } = request;
+    response.json(users)
+})
 
-    if(!filter && !value) return response.send(mockUsers);  //if filter or value field is empty, return the whole list of users
-
-    if (filter && value)
-        return response.send(
-          mockUsers.filter((user) => user[filter].includes(value))
-    )
-
-    response.send(mockUsers)
-});
 //POST create a post method that is used to post new user information to the server via a request body
-app.post('/api/users', (request, response) => {
-    console.log(request.body);
-    const { body } = request;
-    const newUser = { id: mockUsers[mockUsers.length - 1].id + 1, ...body };
-    mockUsers.push(newUser);
-    return response.status(201).send(newUser); //return code 201 (Created) if new user info is added successfully into the users list
+app.post('/api/users', async (request, response) => {
+    try{
+        const hashedPassword = await bcrypt.hash(request.body.password, 10) //encrypt the user password by using bcrypt, 10 rounds of salt added
+        console.log(hashedPassword)
+        const sql = 'INSERT INTO users (Email, UserName, Hash) VALUES ("'+request.body.email+'", "'+request.body.username+'", "'+hashedPassword+'")';
+        db.query(sql); //insert user information into the MySQL database using the query in the previous line
+        response.status(201).send() //return code 201 (Created) if new user info is added successfully into the users list
+    } catch {
+        response.status(500).send() //return code 500 (Internal server error)
+    }
+    
 });
 
 //GET create a route used to fetch users by the "id" value
@@ -122,6 +122,16 @@ app.patch('/api/users/:id', (request,response) => {
 app.listen(PORT, () => {
     console.log(`Running on port ${PORT}`);
 });
+
+//GET login route
+app.get('/login', (request, response) => {
+    response.render('login')
+})
+
+//GET login route
+app.get('/signup', (request, response) => {
+    response.render('signup')
+})
 
 // localhost:3000
 // localhost:3000/users
