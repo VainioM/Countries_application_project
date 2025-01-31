@@ -1,11 +1,15 @@
 import { createRequire } from 'module';
-import express from "express";
+import express, { response } from "express";
+import { error } from 'console';
+import { request } from 'http';
 
 const require = createRequire(import.meta.url);
 const app = express();
 const mysql = require('mysql')
 const cors = require('cors')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const session = require('express-session')
 
 app.use(express.json());
 app.use(cors())
@@ -52,9 +56,10 @@ app.get('/api/users', (request, response) => {
 })
 
 //POST create a post method that is used to post new user information to the server via a request body
-app.post('/api/users', async (request, response) => {
+app.post('/api/register', async (request, response) => {
     try{
-        const hashedPassword = await bcrypt.hash(request.body.password, 10) //encrypt the user password by using bcrypt, 10 rounds of salt added
+        const rounds = 13
+        const hashedPassword = await bcrypt.hash(request.body.password, rounds) //encrypt the user password by using bcrypt, 10 rounds of salt added
         console.log(hashedPassword)
         const sql = 'INSERT INTO users (Email, UserName, Hash) VALUES ("'+request.body.email+'", "'+request.body.username+'", "'+hashedPassword+'")';
         db.query(sql); //insert user information into the MySQL database using the query in the previous line
@@ -118,20 +123,76 @@ app.patch('/api/users/:id', (request,response) => {
     return response.sendStatus(200);    //return code 200(OK) if the patch was successful
 })
 
-//define the port 
-app.listen(PORT, () => {
-    console.log(`Running on port ${PORT}`);
-});
+
+const verifyJWT = (request, response, next) => {
+    const token = request.headers["x-access-token"]
+
+    if (!token) {
+        response.send("A token is needed!")
+    } else{
+        jwt.JsonWebTokenError.verify(token, "jwtSecret", (err, decoded) => {
+            if(err) {
+                response.json({ auth: false, message: "U failed to authenticate" });
+            } else {
+                request.useId = decoded.id;
+                next();
+            }
+        })
+    }
+}
+
+app.get('isUserAuth', verifyJWT, (request, response) =>{
+    response.send("You are authenticated")
+})
 
 //GET login route
-app.get('/login', (request, response) => {
-    response.render('login')
+app.post('/login', (request, response) => {
+    //response.render('login')
+    const username = request.body.username;
+    const password = request.body.password;
+
+    db.query(
+        "SELECT * FROM users WHERE username = ?;",
+        username,
+        (err,result) => {
+            if (err) {
+                response.send({ err: err });
+            }
+
+            if (result.lenght > 0) {
+                bcrypt.compare(password, result[0].Hash, (error, response) => {
+                    if (response) {
+
+                        const id = result[0].username //using username as id
+                        const token = jwt.sign({id}, "jwtSecret", {
+                            expiresIn: 300,
+                        })
+
+                        request.session.user = result;
+
+                        response.json({auth: true, token: token, result: result});
+                    } else {
+                        response.send({ message: "Wrong username/password combination!" });
+                    }
+                
+                });
+
+            } else {
+                response.send({ message: "User does not exist" });
+            }
+        }
+    )
 })
 
 //GET login route
 app.get('/signup', (request, response) => {
     response.render('signup')
 })
+
+//define the port 
+app.listen(PORT, () => {
+    console.log(`Running on port ${PORT}`);
+});
 
 // localhost:3000
 // localhost:3000/users
