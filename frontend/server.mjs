@@ -13,6 +13,7 @@ const session = require('express-session')
 
 app.use(express.json());
 app.use(cors())
+app.use(session({secret: "Shh, its a secret!"}));
 
 const users = [{ email: 'asdfg@gmail.com', username: 'Person_1', password: 'qwerty' }] //this will be replaced by an SQL table
 
@@ -148,30 +149,32 @@ app.get('isUserAuth', verifyJWT, (request, response) =>{
 //GET login route
 app.post('/login', (request, response) => {
     //response.render('login')
-    const username = request.body.username;
+    const name = request.body.username;
     const password = request.body.password;
 
     db.query(
         "SELECT * FROM users WHERE username = ?;",
-        username,
+        name,
         (err,result) => {
             if (err) {
                 response.send({ err: err });
-            }
+            } //toimii tähän asti
 
-            if (result.lenght > 0) {
-                bcrypt.compare(password, result[0].Hash, (error, response) => {
-                    if (response) {
+            if (toString(result).length > 5) {
+                bcrypt.compare(password, result[1].Hash, (err) => {
+                    if (result) {
 
-                        const id = result[0].username //using username as id
+                        const id = result[1].UserName //using username as id
+
                         const token = jwt.sign({id}, "jwtSecret", {
                             expiresIn: 300,
                         })
 
-                        request.session.user = result;
-
-                        response.json({auth: true, token: token, result: result});
-                    } else {
+                        request.session.currentuser = result;
+                        //response.send({ message: "Correct password. Token set" })
+                        response.json({auth: true, token: token, result: result[1]});
+                    } else if (err) {
+                        //response.json(result[0].Hash)
                         response.send({ message: "Wrong username/password combination!" });
                     }
                 
