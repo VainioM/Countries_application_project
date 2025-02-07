@@ -6,13 +6,19 @@ import { request } from 'http';
 const require = createRequire(import.meta.url);
 const app = express();
 const mysql = require('mysql')
-const cors = require('cors')
+var cors = require('cors')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const session = require('express-session')
 
+const corsOptions ={
+    origin:'http://localhost:5173', 
+    withCredentials:false,            //access-control-allow-credentials:true
+    optionSuccessStatus:200
+}
+
 app.use(express.json());
-app.use(cors())
+app.use(cors(corsOptions));
 app.use(session({secret: "Shh, its a secret!"}));
 
 const users = [{ email: 'asdfg@gmail.com', username: 'Person_1', password: 'qwerty' }] //this will be replaced by an SQL table
@@ -60,7 +66,7 @@ app.get('/api/users', (request, response) => {
 app.post('/api/register', async (request, response) => {
     try{
         const rounds = 13
-        const hashedPassword = await bcrypt.hash(request.body.password, rounds) //encrypt the user password by using bcrypt, 10 rounds of salt added
+        const hashedPassword = await bcrypt.hash(request.body.password, rounds) //encrypt the user password by using bcrypt, 13 rounds of salt added
         console.log(hashedPassword)
         const sql = 'INSERT INTO users (Email, UserName, Hash) VALUES ("'+request.body.email+'", "'+request.body.username+'", "'+hashedPassword+'")';
         db.query(sql); //insert user information into the MySQL database using the query in the previous line
@@ -155,18 +161,18 @@ app.post('/login', (request, response) => {
     db.query(
         "SELECT * FROM users WHERE username = ?;",
         name,
-        (err,result) => {
+        (err,result) => { //Send a database query and save the results to "result"
             if (err) {
                 response.send({ err: err });
-            } //toimii tähän asti
+            } 
 
-            if (toString(result).length > 5) {
-                bcrypt.compare(password, result[1].Hash, (err) => {
+            if (toString(result).length > 5) { //Check if the database call return is empty or not
+                bcrypt.compare(password, result[1].Hash, (err) => { // Compare the input password and the one in the db
                     if (result) {
 
                         const id = result[1].UserName //using username as id
 
-                        const token = jwt.sign({id}, "jwtSecret", {
+                        const token = jwt.sign({id}, "jwtSecret", { // Create a JSON Web token for the user
                             expiresIn: 300,
                         })
 

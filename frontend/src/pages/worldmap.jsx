@@ -1,7 +1,16 @@
+import { useLoadScript } from "@react-google-maps/api"
+//import Map from "../components/map" 
+
+
 function Worldmap(){
-    return <div className="favorites-empty">
-        <h2>The world map goes here...</h2>
-    </div>
+   /* const { isLoaded } = useLoadScript({
+        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+        libraries: ["places"],
+    });
+
+    return(
+        <div><h1>Map</h1></div>
+    )*/
 }
 
 export default Worldmap

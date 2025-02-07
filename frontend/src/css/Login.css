@@ -1,0 +1,31 @@
+.form{
+    display: grid;
+    padding-bottom: 1rem;
+    max-width: 2rem;
+    gap: 1rem;
+}
+.input-box{
+    border-radius: 4px;
+    background-color: #333333c3;
+    flex: 1;
+    font-size: 1rem;
+    border: none;
+    height: 1.5rem;
+}
+.search-button{
+    padding: 0.75rem 1.5rem;
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+} 
+.login{
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: -100px;
+}
+.header-text{
+    max-width: 200px;
+}

@@ -4,7 +4,7 @@
   }
   
   .search-form {
-    max-width: 600px;
+    max-width: 400px;
     margin: 0 auto 2rem;
     display: flex;
     gap: 1rem;
@@ -17,9 +17,10 @@
     padding: 0.75rem 1rem;
     border: none;
     border-radius: 4px;
-    background-color: #333;
+    background-color: #333333c3;
     color: white;
     font-size: 1rem;
+    width: 1rem;
   }
   
   .search-input:focus {
@@ -29,7 +30,7 @@
   
   .search-button {
     padding: 0.75rem 1.5rem;
-    background-color: rgb(2, 118, 0);
+    background-color: #333;
     color: white;
     border-radius: 4px;
     font-weight: 500;
@@ -38,7 +39,8 @@
   }
   
   .search-button:hover {
-    background-color: #015000;
+    background-color: #000000;
+    border-color: #000000;
   }
   
   
@@ -54,8 +56,8 @@
   
   .countries-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
     padding: 1rem;
     width: 100%;
     box-sizing: border-box;

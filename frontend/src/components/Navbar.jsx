@@ -10,6 +10,7 @@ function Navbar(){
             <Link to="/" className="nav-link">Home</Link>
             <Link to="/visited" className="nav-link">Visited</Link>
             <Link to="/worldmap" className="nav-link">World map</Link>
+            <Link to="/login" className="nav-link-login">Login</Link>
         </div>
     </nav>
 }
