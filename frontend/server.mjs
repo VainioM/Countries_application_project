@@ -167,8 +167,8 @@ app.post('/login', (request, response) => {
             } 
 
             if (toString(result).length > 5) { //Check if the database call return is empty or not
-                bcrypt.compare(password, result[1].Hash, (err) => { // Compare the input password and the one in the db
-                    if (result) {
+                bcrypt.compare(password, result[1].Hash, (err, match) => { // Compare the input password and the one in the db
+                    if (match == true) {
 
                         const id = result[1].UserName //using username as id
 
@@ -179,7 +179,7 @@ app.post('/login', (request, response) => {
                         request.session.currentuser = result;
                         //response.send({ message: "Correct password. Token set" })
                         response.json({auth: true, token: token, result: result[1]});
-                    } else if (err) {
+                    } else if (match == false) {
                         //response.json(result[0].Hash)
                         response.send({ message: "Wrong username/password combination!" });
                     }

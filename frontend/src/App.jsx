@@ -13,15 +13,15 @@ import { useEffect, useState } from 'react';
 function App() {
 
   return (
-    <body>
+    
     <div>
-      <div class="bg-image"></div>
+      <div className="bg-image"></div>
     
         <div>
           <CountryProvider>
             <Navbar />
 
-            <main class='main-content'>
+            <main className='main-content'>
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/visited" element={<Visited />} />
@@ -35,7 +35,7 @@ function App() {
           <Footer />
         </div>
         </div>
-      </body>
+      
       
   );
 }
